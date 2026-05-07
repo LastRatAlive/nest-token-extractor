@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body {
+    width: 420px;
+    padding: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 13px;
+    color: #333;
+    margin: 0;
+  }
+  h2 { margin: 0 0 8px; font-size: 16px; }
+  p { margin: 4px 0 12px; line-height: 1.4; color: #555; }
+  .status {
+    padding: 10px;
+    border-radius: 6px;
+    margin: 12px 0;
+    font-size: 13px;
+  }
+  .status.info { background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
+  .status.success { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+  
+  .section {
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 12px;
+    display: none;
+  }
+  .section h3 { margin: 0 0 10px; font-size: 14px; color: #222; }
+  
+  .field-group { margin-bottom: 10px; }
+  .field-group label { display: block; font-weight: 600; margin-bottom: 4px; font-size: 12px; }
+  .input-row { display: flex; gap: 8px; }
+  
+  select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 13px;
+    background: #fff;
+  }
+
+  input[type="text"], textarea {
+    flex: 1;
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 11px;
+    box-sizing: border-box;
+    background: #fff;
+  }
+  textarea { height: 60px; resize: vertical; word-break: break-all; }
+  
+  button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-primary { background: #1976d2; color: white; width: 100%; padding: 10px; font-size: 14px; margin-top: 4px; }
+  .btn-primary:hover { background: #1565c0; }
+  .btn-primary:disabled { background: #bbdefb; cursor: not-allowed; }
+  
+  .btn-copy { background: #e0e0e0; color: #333; flex-shrink: 0; min-width: 60px; }
+  .btn-copy:hover { background: #d5d5d5; }
+  
+  .warning { font-size: 11px; color: #d32f2f; margin-top: 4px; display: block; }
+</style>
+</head>
+<body>
+  <h2>Nest Token Extractor</h2>
+  <p>Extracts fields needed for Home Assistant integrations and Homebridge plugins. Works for both Google and Legacy Nest accounts.</p>
+
+  <div class="field-group">
+    <label for="env_select">Environment</label>
+    <select id="env_select">
+      <option value="prod">Production (home.nest.com)</option>
+      <option value="ft">Field Test (home.ft.nest.com)</option>
+    </select>
+  </div>
+
+  <button id="extract_btn" class="btn-primary">Open Nest & Start Extraction</button>
+  <div id="status_area"></div>
+
+  <!-- Google Account Section -->
+  <div id="google_section" class="section">
+    <h3>Google Account Credentials</h3>
+    <div class="field-group">
+      <label>Issue Token</label>
+      <div class="input-row">
+        <input type="text" id="issue_token" readonly>
+        <button class="btn-copy" data-target="issue_token">Copy</button>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Cookies</label>
+      <div class="input-row">
+        <textarea id="cookies" readonly></textarea>
+        <button class="btn-copy" data-target="cookies">Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Legacy Nest Account Section -->
+  <div id="legacy_section" class="section">
+    <h3>Legacy Nest Account Credentials</h3>
+    <div class="field-group">
+      <label>Access Token</label>
+      <div class="input-row">
+        <input type="text" id="access_token" readonly>
+        <button class="btn-copy" data-target="access_token">Copy</button>
+      </div>
+    </div>
+  </div>
+  
+  <span class="warning" style="display: none;" id="close_warning"><b>IMPORTANT:</b> Do not explicitly log out when finished! Just close the tab, otherwise your token will be invalidated immediately.</span>
+
+  <script src="popup.js"></script>
+</body>
+</html>
