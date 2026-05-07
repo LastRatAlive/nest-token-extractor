@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-and-release:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     permissions:
       contents: write
 
@@ -14,12 +14,58 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Create extension zip
+      - name: Build Chrome Extension
         run: |
-          cd extension
-          zip -r ../nest-token-extractor.zip .
+          mkdir -p build/chrome
+          cp -r src/* build/chrome/
+          cp manifests/manifest.chrome.json build/chrome/manifest.json
+          cd build/chrome
+          zip -r ../../nest-token-extractor-chrome.zip .
+
+      - name: Build Firefox Extension
+        run: |
+          mkdir -p build/firefox
+          cp -r src/* build/firefox/
+          cp manifests/manifest.firefox.json build/firefox/manifest.json
+          cd build/firefox
+          zip -r ../../nest-token-extractor-firefox.zip .
+
+      - name: Generate and Build Safari Extension
+        run: |
+          # 1. Structure a temporary directory for conversion with a valid base manifest
+          mkdir -p build/safari-source
+          cp -r src/* build/safari-source/
+          cp manifests/manifest.chrome.json build/safari-source/manifest.json
+          
+          # 2. Run the conversion tool to build the raw Xcode workspace
+          xcrun safari-web-extension-converter build/safari-source \
+            --project-location safari-project \
+            --app-name "Nest Token Extractor" \
+            --bundle-identifier "com.yourdomain.nesttokenextractor" \
+            --no-open \
+            --swift \
+            --macos-only \
+            --force \
+            --copy-resources
+          
+          # 3. Programmatically compile the generated app removing signing identities
+          xcodebuild -project "safari-project/Nest Token Extractor/Nest Token Extractor.xcodeproj" \
+            -scheme "Nest Token Extractor (macOS)" \
+            -configuration Release \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            SYMROOT="$(pwd)/build/safari-out" \
+            clean build
+            
+          # 4. Navigate into build artifacts and zip the native mac app bundle
+          cd "build/safari-out/Release"
+          zip -r ../../../nest-token-extractor-safari.zip "Nest Token Extractor.app"
 
       - name: Upload to release
         uses: softprops/action-gh-release@v2
         with:
-          files: nest-token-extractor.zip
+          files: |
+            nest-token-extractor-chrome.zip
+            nest-token-extractor-firefox.zip
+            nest-token-extractor-safari.zip

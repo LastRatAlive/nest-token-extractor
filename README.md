@@ -1,6 +1,6 @@
-# Nest Token Extractor (Chrome Extension)
+# Nest Token Extractor (Cross-Browser Extension)
 
-A unified Google Chrome extension that easily extracts the authentication credentials required for home automation projects integrating Nest devices. It breaks down the outputs into distinct, copyable fields so you can plug them directly into your integration.
+A unified browser extension that easily extracts the authentication credentials required for home automation projects integrating Nest devices. It breaks down the outputs into distinct, copyable fields so you can plug them directly into your integration.
 
 Supports major custom components and plugins including:
 
@@ -11,23 +11,43 @@ Supports major custom components and plugins including:
 
 ## Features
 
+- **Multi-Browser Support**: Works identically on Google Chrome, Mozilla Firefox, and Apple Safari.
 - **Google Accounts Support**: Automatically extracts both `issueToken` and `cookies` values.
 - **Legacy Nest Accounts Support**: Directly fetches the legacy `access_token` session token.
-- **Field Test Environment**: Easily toggle between Production (`home.nest.com`) and Field Test (`home.ft.nest.com`) environments.
+- **Field Test Environment**: Easily toggle between Production (`home.nest.com`) and Field Test (`home.ft.nest.com`).
 - **Isolated Fields**: Outputs raw, unencoded fields so you can extract exactly what you need.
 
 ## Installation
 
-1. Download the latest `nest-token-extractor.zip` from the [Releases page](https://github.com/tronikos/nest-token-extractor/releases/latest).
-2. Unzip the file onto your computer.
-3. Open Google Chrome (or a Chromium-based browser) and navigate to `chrome://extensions`.
-4. Enable **Developer mode** (toggle in the top-right corner).
-5. Click **Load unpacked** and select the unzipped `extension` folder.
-6. Pin the extension icon to your browser toolbar for easy access.
+Download the respective zip file for your browser from the [Releases page](https://github.com/tronikos/nest-token-extractor/releases/latest).
+
+### Google Chrome (and Chromium browsers)
+
+1. Unzip `nest-token-extractor-chrome.zip`.
+2. Open Chrome and navigate to `chrome://extensions`.
+3. Enable **Developer mode** (toggle in the top-right corner).
+4. Click **Load unpacked** and select the unzipped folder.
+
+### Mozilla Firefox
+
+1. Unzip `nest-token-extractor-firefox.zip`.
+2. Open Firefox and navigate to `about:debugging#/runtime/this-firefox`.
+3. Click **Load Temporary Add-on...**
+4. Select the `manifest.json` file inside the unzipped folder.
+
+### Apple Safari (macOS)
+
+Because this is an unsigned community build, you must enable Safari's developer settings to register it:
+
+1. Unzip `nest-token-extractor-safari.zip` and move `Nest Token Extractor.app` to your Applications folder.
+2. Open Safari and go to **Safari > Settings > Advanced**. Check **Show features for web developers**.
+3. Go to the new **Develop** menu in your system top bar and click **Allow Unsigned Extensions**.
+4. Launch `Nest Token Extractor.app` once to register it with macOS.
+5. Go back into **Safari > Settings > Extensions** and toggle the checkbox next to the extension to enable it.
 
 ## Usage
 
-1. **⚠️ IMPORTANT**: Use a standard Chrome window. Do **NOT** use Incognito Mode, as third-party login cookies are restricted and you will face endless redirect loops during authentication.
+1. **⚠️ IMPORTANT**: Use a standard browsing window. Do **NOT** use Incognito/Private Mode, as third-party login cookies are restricted and you will face endless redirect loops during authentication.
 2. Click the extension icon in your browser toolbar.
 3. Select your environment (Production or Field Test).
 4. Click the **Open Nest & Start Extraction** button. This will automatically redirect you to the appropriate Nest portal.
