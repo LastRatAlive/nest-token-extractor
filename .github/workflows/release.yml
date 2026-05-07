@@ -50,7 +50,7 @@ jobs:
           
           # 3. Programmatically compile the generated app removing signing identities
           xcodebuild -project "safari-project/Nest Token Extractor/Nest Token Extractor.xcodeproj" \
-            -scheme "Nest Token Extractor (macOS)" \
+            -scheme "Nest Token Extractor" \
             -configuration Release \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
