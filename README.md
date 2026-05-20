@@ -47,6 +47,15 @@ Because this is an unsigned community build, you must enable Safari's developer 
 
 ## Usage
 
+> [!WARNING]
+> **⚠️ CRITICAL BROWSER WARNING (Google Chrome):**
+> Do **NOT** use Google Chrome or Microsoft Edge to extract cookies for Google Accounts. Modern Chromium-based browsers use aggressive, hardware-bound session security (Device Bound Session Credentials / DBSC) with Google. Cookies extracted via Chrome are cryptographically bound to the Chrome hardware profile and will fail with `Invalid authentication` in Python/Home Assistant or Homebridge.
+> **You MUST use Firefox or Safari** to run this extraction and get a long-lived, portable cookie.
+
+> [!TIP]
+> **💡 FIREFOX ENHANCED TRACKING PROTECTION:**
+> Firefox's Enhanced Tracking Protection (ETP) blocks third-party cookie transmission in cross-origin frames by default. While this extension implements automatic cookie jar fallbacks, if you still get an empty **Cookies** field, click the **Shield** icon in the Firefox address bar on `home.nest.com` and toggle off **Enhanced Tracking Protection**. Then restart the extraction.
+
 1. **⚠️ IMPORTANT**: Use a standard browsing window. Do **NOT** use Incognito/Private Mode, as third-party login cookies are restricted and you will face endless redirect loops during authentication.
 2. Click the extension icon in your browser toolbar.
 3. Select your environment (Production or Field Test).

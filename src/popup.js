@@ -4,6 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const statusArea = document.getElementById("status_area");
   const closeWarning = document.getElementById("close_warning");
 
+  const chromeWarning = document.getElementById("chrome_warning");
+  const firefoxWarning = document.getElementById("firefox_warning");
+
   const googleSection = document.getElementById("google_section");
   const issueTokenField = document.getElementById("issue_token");
   const cookiesField = document.getElementById("cookies");
@@ -12,6 +15,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const accessTokenField = document.getElementById("access_token");
 
   let pollInterval = null;
+
+  // Browser detection for warnings
+  const userAgent = navigator.userAgent.toLowerCase();
+  if (userAgent.includes("firefox")) {
+    if (firefoxWarning) firefoxWarning.style.display = "block";
+  } else if (userAgent.includes("chrome") || userAgent.includes("chromium") || userAgent.includes("edg")) {
+    if (chromeWarning) chromeWarning.style.display = "block";
+  }
 
   function setStatus(msg, type) {
     statusArea.innerHTML = `<div class="status ${type}">${msg}</div>`;

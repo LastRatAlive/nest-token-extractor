@@ -74,11 +74,41 @@
   .btn-copy:hover { background: #d5d5d5; }
   
   .warning { font-size: 11px; color: #d32f2f; margin-top: 4px; display: block; }
+  .alert-banner {
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    line-height: 1.4;
+    margin-bottom: 12px;
+    display: none;
+  }
+  .alert-banner.danger {
+    background: #fdf2f2;
+    color: #9b1c1c;
+    border: 1px solid #f8b4b4;
+  }
+  .alert-banner.warning {
+    background: #fffbeb;
+    color: #92400e;
+    border: 1px solid #fde68a;
+  }
+  .alert-banner b {
+    font-weight: bold;
+  }
 </style>
 </head>
 <body>
   <h2>Nest Token Extractor</h2>
   <p>Extracts fields needed for Home Assistant integrations and Homebridge plugins. Works for both Google and Legacy Nest accounts.</p>
+
+  <!-- Browser Alert Banners -->
+  <div id="chrome_warning" class="alert-banner danger">
+    <b>⚠️ CRITICAL WARNING FOR GOOGLE CHROME:</b> Google Chrome utilizes hardware-bound session security (DBSC) for Google Accounts. Credentials extracted here using Chrome <b>will fail</b> in Home Assistant either immediately or after a few hours. Please use <b>Firefox</b> or <b>Safari</b> instead.
+  </div>
+
+  <div id="firefox_warning" class="alert-banner warning">
+    <b>💡 NOTE FOR FIREFOX USERS:</b> If you encounter an empty Cookies field, ensure you have clicked the shield icon in the Firefox address bar on <b>home.nest.com</b> and turned off <b>Enhanced Tracking Protection</b>. This allows Google's session cookies to be securely extracted.
+  </div>
 
   <div class="field-group">
     <label for="env_select">Environment</label>

